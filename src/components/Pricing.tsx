@@ -120,9 +120,10 @@ export default function Pricing() {
             Monthly
           </span>
           <button
+            type="button"
             onClick={() => setIsYearly(!isYearly)}
             className={cn(
-              'relative h-6 w-11 sm:h-7 sm:w-12 rounded-full transition-colors duration-300',
+              'relative h-6 w-11 sm:h-7 sm:w-12 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
               isYearly
                 ? 'bg-primary-500'
                 : 'bg-surface-300 dark:bg-surface-600'

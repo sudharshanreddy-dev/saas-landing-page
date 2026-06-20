@@ -60,9 +60,11 @@ function AccordionItem({
       )}
     >
       <button
+        type="button"
         onClick={toggle}
-        className="flex items-center justify-between w-full p-4 sm:p-5 text-left"
+        className="flex items-center justify-between w-full p-4 sm:p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 rounded-xl"
         aria-expanded={isOpen}
+        aria-controls={`faq-answer-${faq.question.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`}
       >
         <span className="text-sm sm:text-base font-semibold text-surface-900 dark:text-white pr-3 sm:pr-4 leading-snug">
           {faq.question}

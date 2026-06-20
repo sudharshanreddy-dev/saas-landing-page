@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, Star, Users, TrendingUp } from 'lucide-react';
 
+
+
 const stats = [
   { icon: Users, value: '50K+', label: 'Active Users' },
   { icon: Star, value: '4.9/5', label: 'User Rating' },

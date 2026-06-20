@@ -51,7 +51,7 @@ export default function CTA() {
           className="mt-8 sm:mt-10 max-w-md mx-auto"
         >
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3" aria-label="Sign up for free trial">
               <div className="relative">
                 <User className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-primary-300" />
                 <input
@@ -78,7 +78,7 @@ export default function CTA() {
               </div>
               <button
                 type="submit"
-                className="group w-full inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 px-6 rounded-xl bg-white text-primary-700 font-semibold text-sm sm:text-base hover:bg-primary-50 transition-all duration-200 shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
+                className="group w-full inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 px-6 rounded-xl bg-white text-primary-700 font-semibold text-sm sm:text-base hover:bg-primary-50 transition-all duration-200 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
               >
                 Start Free Trial
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

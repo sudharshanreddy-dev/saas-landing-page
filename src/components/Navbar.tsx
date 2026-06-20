@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Moon, Sun, Zap } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -43,25 +43,39 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
     };
   }, [isOpen]);
 
+  // Close menu on escape key
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape' && isOpen) {
+      setIsOpen(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
     <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      <header
         className={cn(
           'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
           scrolled || isOpen
             ? 'bg-white/95 dark:bg-surface-900/95 backdrop-blur-xl border-b border-surface-200/50 dark:border-surface-700/50 shadow-sm'
             : 'bg-white/95 dark:bg-surface-900/95 backdrop-blur-xl'
         )}
+        role="banner"
       >
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-2 group" aria-label="NexusAI Home">
+            <a 
+              href="#" 
+              className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg" 
+              aria-label="NexusAI - Go to homepage"
+            >
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-lg shadow-primary-500/25 group-hover:shadow-primary-500/40 transition-shadow">
-                <Zap className="h-5 w-5 text-white" />
+                <Zap className="h-5 w-5 text-white" aria-hidden="true" />
               </div>
               <span className="text-xl font-bold text-surface-900 dark:text-white">
                 Nexus<span className="text-primary-500">AI</span>
@@ -69,17 +83,18 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
             </a>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1" role="navigation" aria-label="Primary">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                    'px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
                     activeId === link.href.slice(1)
                       ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/50'
                       : 'text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800'
                   )}
+                  aria-current={activeId === link.href.slice(1) ? 'page' : undefined}
                 >
                   {link.label}
                 </a>
@@ -89,15 +104,17 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-3">
               <button
+                type="button"
                 onClick={toggleDark}
-                className="p-2.5 rounded-lg text-surface-500 hover:text-surface-900 dark:text-surface-400 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+                className="p-2.5 rounded-lg text-surface-500 hover:text-surface-900 dark:text-surface-400 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-pressed={isDark}
               >
-                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {isDark ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
               </button>
               <a
-                href="#pricing"
-                className="px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-200 hover:-translate-y-0.5"
+                href="#cta"
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
                 Get Started Free
               </a>
@@ -106,24 +123,28 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-1 lg:hidden">
               <button
+                type="button"
                 onClick={toggleDark}
-                className="p-2 rounded-lg text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+                className="p-2 rounded-lg text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-pressed={isDark}
               >
-                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {isDark ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
               </button>
               <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-lg text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
-                aria-label="Toggle menu"
+                className="p-2 rounded-lg text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={isOpen}
+                aria-controls="mobile-menu"
               >
-                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
               </button>
             </div>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -141,12 +162,14 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
             />
 
             {/* Slide-down menu */}
-            <motion.div
+            <motion.nav
+              id="mobile-menu"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="fixed top-16 left-0 right-0 z-50 max-h-[calc(100vh-4rem)] overflow-y-auto bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-700 shadow-xl lg:hidden"
+              aria-label="Mobile navigation"
             >
               <div className="px-4 py-4 space-y-1">
                 {navLinks.map((link, i) => (
@@ -158,11 +181,12 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
                     transition={{ duration: 0.2, delay: 0.05 + i * 0.05 }}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      'block px-4 py-3 text-base font-medium rounded-xl transition-colors',
+                      'block px-4 py-3 text-base font-medium rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
                       activeId === link.href.slice(1)
                         ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/50'
                         : 'text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800'
                     )}
+                    aria-current={activeId === link.href.slice(1) ? 'page' : undefined}
                   >
                     {link.label}
                   </motion.a>
@@ -174,15 +198,15 @@ export default function Navbar({ isDark, toggleDark }: NavbarProps) {
                   className="pt-3 pb-1"
                 >
                   <a
-                    href="#pricing"
+                    href="#cta"
                     onClick={() => setIsOpen(false)}
-                    className="block w-full py-3 text-center text-base font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-500 rounded-xl shadow-lg"
+                    className="block w-full py-3 text-center text-base font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-500 rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
                     Get Started Free
                   </a>
                 </motion.div>
               </div>
-            </motion.div>
+            </motion.nav>
           </>
         )}
       </AnimatePresence>

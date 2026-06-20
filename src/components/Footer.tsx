@@ -67,22 +67,30 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-surface-900 dark:bg-surface-950 border-t border-surface-800 dark:border-surface-800" role="contentinfo">
+    <footer 
+      className="bg-surface-900 dark:bg-surface-950 border-t border-surface-800 dark:border-surface-800" 
+      role="contentinfo"
+      aria-label="Site footer"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Footer */}
         <div className="py-10 sm:py-12 lg:py-16">
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
             {/* Brand */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
-              <a href="#" className="flex items-center gap-2 mb-3 sm:mb-4">
+              <a 
+                href="#" 
+                className="flex items-center gap-2 mb-3 sm:mb-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg w-fit"
+                aria-label="NexusAI - Go to homepage"
+              >
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
-                  <Zap className="h-4 w-4 text-white" />
+                  <Zap className="h-4 w-4 text-white" aria-hidden="true" />
                 </div>
                 <span className="text-lg font-bold text-white">
                   Nexus<span className="text-primary-400">AI</span>
                 </span>
               </a>
-              <p className="text-xs sm:text-sm text-surface-400 leading-relaxed max-w-xs">
+              <p className="text-xs sm:text-sm text-surface-300 leading-relaxed max-w-xs">
                 AI-powered productivity platform that helps teams work smarter, not harder.
               </p>
               {/* Social Links */}
@@ -91,8 +99,8 @@ export default function Footer() {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="p-2 rounded-lg text-surface-400 hover:text-white hover:bg-surface-800 transition-colors"
-                    aria-label={link.name}
+                    className="p-2 rounded-lg text-surface-400 hover:text-white hover:bg-surface-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                    aria-label={`Follow us on ${link.name}`}
                   >
                     {link.icon}
                   </a>
@@ -104,12 +112,12 @@ export default function Footer() {
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
                 <h3 className="text-xs sm:text-sm font-semibold text-white mb-3 sm:mb-4">{title}</h3>
-                <ul className="space-y-2.5 sm:space-y-3">
+                <ul className="space-y-2.5 sm:space-y-3" role="list">
                   {links.map((link) => (
                     <li key={link.label}>
                       <a
                         href={link.href}
-                        className="text-xs sm:text-sm text-surface-400 hover:text-white transition-colors"
+                        className="text-xs sm:text-sm text-surface-300 hover:text-white transition-colors focus:outline-none focus-visible:underline"
                       >
                         {link.label}
                       </a>
@@ -123,17 +131,29 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="py-5 sm:py-6 border-t border-surface-800 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-          <p className="text-[10px] sm:text-xs text-surface-500">
+          <p className="text-xs sm:text-sm text-surface-400">
             &copy; {new Date().getFullYear()} NexusAI. All rights reserved.
           </p>
-          <div className="flex gap-4 sm:gap-6">
-            <a href="#" className="text-[10px] sm:text-xs text-surface-500 hover:text-surface-300 transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-[10px] sm:text-xs text-surface-500 hover:text-surface-300 transition-colors">
-              Terms of Service
-            </a>
-          </div>
+          <nav aria-label="Legal links">
+            <ul className="flex gap-4 sm:gap-6" role="list">
+              <li>
+                <a 
+                  href="#" 
+                  className="text-xs sm:text-sm text-surface-400 hover:text-surface-200 transition-colors focus:outline-none focus-visible:underline"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#" 
+                  className="text-xs sm:text-sm text-surface-400 hover:text-surface-200 transition-colors focus:outline-none focus-visible:underline"
+                >
+                  Terms of Service
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>
